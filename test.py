@@ -85,17 +85,17 @@ import string
 # print(name)
 
 
-i = 0
-with open('e:\datasets\id\checked_entity_list_20180612.csv', 'r', encoding="utf8") as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=' ', quoting=csv.QUOTE_ALL)
-    for row in spamreader:
-        i+=1
-        if i>3:
-            break
-        # name = row[0].strip()[10:].replace('.','._').replace('__','_')
-        # if name == 'a._proper_name':
-        #     continue
-        print(row)
+# i = 0
+# with open('e:\datasets\id\checked_entity_list_20180612.csv', 'r', encoding="utf8") as csvfile:
+#     spamreader = csv.reader(csvfile, delimiter=' ', quoting=csv.QUOTE_ALL)
+#     for row in spamreader:
+#         i+=1
+#         if i>3:
+#             break
+#         # name = row[0].strip()[10:].replace('.','._').replace('__','_')
+#         # if name == 'a._proper_name':
+#         #     continue
+#         print(row)
 #         if not check_english(name):
 #             # If half of the names are regular English characters, see it as an accent.
 #             if non_english_character_count(name) < len(name) / 2:
@@ -115,3 +115,10 @@ with open('e:\datasets\id\checked_entity_list_20180612.csv', 'r', encoding="utf8
 #         i+=1
 #         if i>5:
 #             break
+
+name_replace = 'af'
+item_list = ['112', 'fg', '345']
+# end_flag = '\n'
+write_line = [name_replace,] + item_list + ['\n',]
+
+print(write_line)
