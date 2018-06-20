@@ -1,12 +1,19 @@
-
 def inverse_name(name):
     full_name = name.split()
     full_name[0], full_name[-1] = full_name[-1], full_name[0]
-    name_inv = ' '.join([subword for subword in full_name])
+    name_inv = '_'.join([subword for subword in full_name])
+
+def find_idx(name):
+    idx = 0
+    for uchar in name:
+        if is_number(uchar):
+            idx += 1
+        else:
+            return idx
 
 if __name__=='__main__':
     inname = '.\\files\out_entity\entity_list_all.txt'
-    outname = '.\\files\out_entity\entity_overlap_new.txt'
+    outname = '.\\files\out_entity\entity_overlap.txt'
     infile = open(inname, 'r', encoding='utf8')
     outfile = open(outname, 'a', encoding='utf8')
     name_dict = {}
@@ -16,9 +23,10 @@ if __name__=='__main__':
         # i+=1
         # if i>5000:
         #     break
-        strip_line = line.strip().replace(' ','').replace('_',' ')
-        name = strip_line[9:].lower()
-        id = strip_line[:9]
+        strip_line = line.strip().replace(' ','')
+        idx = find_idx(strip_line)
+        name = strip_line[idx:].lower()
+        id = strip_line[:idx]
         id_dict = name_dict.get(name)
         if id_dict:
             if overlap_dict.get(name):
@@ -49,4 +57,3 @@ if __name__=='__main__':
         # id_inv = name_dict.get(name_inv, -1)
         # if id_same != -1:
         #     overlap_dict[]
-
