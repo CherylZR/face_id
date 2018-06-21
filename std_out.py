@@ -7,6 +7,8 @@ from googletrans import Translator
 translator = Translator()
 from wikiapi import WikiApi
 wiki = WikiApi()
+import logging
+import time
 
 def is_number(uchar):
     return uchar >= u'0' and uchar<=u'9'
@@ -62,29 +64,52 @@ def is_short_name(name):
             return True
     return False
 
+def find_idx(name):
+    idx = 0
+    for uchar in name:
+        if is_number(uchar):
+            idx += 1
+        else:
+            return idx
+
 if __name__ == '__main__':
-    inname = '.\\files\checked_entity_list_20180612.txt'
-    outname = '.\\files\out_entity\entity_list_'
+    inname = '.\\files\person-id-name_utf8.txt'
+    outname = '.\\files\out_person\person_list_'
     infile = open(inname, 'r', encoding='utf8')
     # outfile = open(outname, 'w', encoding='utf8')
     i = 0
-    for row in infile.readlines()[1:]:
+    for row in infile.readlines()[35677:]:
 
         # if i>20:
         #     break
-        name = row.strip()[10:]
+        strip_row = row.strip()
+        idx = find_idx(strip_row)
+        if idx > 10:
+            idx = 10
+        name = strip_row[idx:]
         check_en_result = check_english(name)
         if not check_en_result[0]:
             if check_en_result[1]:
                 name = unidecode.unidecode(name)
             else:
+                # for try_times in range(10):
+                #     try:
+                #         name = translator.translate(name).txt
+                #         break
+                #     except:
+                #         time.sleep(2)
+                #         logging.warning('%s fail %s times' % (name, try_times+1))
+                #         if try_times == 9:
+                #             os._exit(0)
+                #         else:
+                #             continue
                 name = translator.translate(name).text
 
         name = name.replace(' ','_').replace('-','_').replace('.','_').replace('___','_').replace('__','_')
 
-        outname_full = outname + str(i//3).zfill(4) + '.txt'
+        outname_full = outname + str(1//1000).zfill(4) + '.txt'
         outfile = open(outname_full, 'a', encoding='utf8')
-        outfile.write(' '.join([row[:9], name]) + '\n')
+        outfile.write(' '.join([row[:idx], name]) + '\n')
         outfile.close()
         # print(name)
         # outfile.write(' '.join([row[:9], name]) + '\n')
